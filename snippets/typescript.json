@@ -1,0 +1,42 @@
+{
+    "Describe unit test": {
+        "prefix": "descr",
+        "body": ["describe('function', () => {", "", "})"],
+        "description": "describe unit test"
+    },
+    "Before unit test": {
+        "prefix": "bf",
+        "body": ["before(() => {", "", "})"],
+        "description": "before unit test"
+    },
+    "BeforeAll unit test": {
+        "prefix": "bfa",
+        "body": ["beforeAll(() => {", "", "})"],
+        "description": "beforeAll unit test"
+    },
+    "After unit test": {
+        "prefix": "af",
+        "body": ["after(() => {", "    sandbox.restore()", "})"],
+        "description": "after unit test"
+    },
+    "AfterAll unit test": {
+        "prefix": "afa",
+        "body": ["afterAll(() => {", "    sandbox.restore()", "})"],
+        "description": "afterAll unit test"
+    },
+    "AfterEach unit test": {
+        "prefix": "afe",
+        "body": ["afterEach(() => {", "    sandbox.reset()", "})"],
+        "description": "afterEach unit test"
+    },
+    "It unit test": {
+        "prefix": "itt",
+        "body": ["it('should return ', () => {", "", "})"],
+        "description": "it unit test"
+    },
+    "ItParams mocha test": {
+        "prefix": "itp",
+        "body": ["itParam('should return when ${value.case}', data, (value) => {", "", "})"],
+        "description": "itParam mocha test"
+    }
+}

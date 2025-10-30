@@ -1,0 +1,52 @@
+{
+  "plugins": {
+    "blink.cmp": {
+      "version": "1.0.0 - 2.0.0"
+    },
+    "conform.nvim": {
+      "rev": "9fd3d5e"
+    },
+    "diffview.nvim": [],
+    "gitsigns.nvim": {
+      "rev": "20ad441"
+    },
+    "grug-far.nvim": {
+      "rev": "3e72397"
+    },
+    "markdown-preview.nvim": [],
+    "noice.nvim": {
+      "rev": "5099348"
+    },
+    "nui.nvim": [],
+    "nvim": {
+      "version": "1.0.0 - 2.0.0"
+    },
+    "nvim-dap": [],
+    "nvim-dap-ui": [],
+    "nvim-dap-virtual-text": [],
+    "nvim-nio": [],
+    "nvim-treesitter": {
+      "rev": "fd2880e8",
+      "version": "'main'"
+    },
+    "nvim-treesitter-textobjects": {
+      "version": "'main'"
+    },
+    "nvim-web-devicons": {
+      "rev": "8dcb311"
+    },
+    "opencode.nvim": {
+      "rev": "c7594f8"
+    },
+    "render-markdown.nvim": {
+      "rev": "93dbd55"
+    },
+    "snacks.nvim": {
+      "rev": "a9b57b2"
+    },
+    "which-key.nvim": {
+      "rev": "3aab214"
+    },
+    "yanky.nvim": []
+  }
+}
