@@ -1,6 +1,7 @@
 {
   "plugins": {
     "blink.cmp": {
+      "rev": "b19413d",
       "version": "1.0.0 - 2.0.0"
     },
     "conform.nvim": {
@@ -28,11 +29,11 @@
     "nvim-dap-virtual-text": [],
     "nvim-nio": [],
     "nvim-treesitter": {
-      "rev": "b5077407",
+      "rev": "0cfa5994",
       "version": "'main'"
     },
     "nvim-treesitter-textobjects": {
-      "rev": "06c00bc",
+      "rev": "227165a",
       "version": "'main'"
     },
     "nvim-web-devicons": {
@@ -42,10 +43,10 @@
       "rev": "217d363"
     },
     "render-markdown.nvim": {
-      "rev": "f58c05f"
+      "rev": "13bfaaa"
     },
     "snacks.nvim": {
-      "rev": "dec29f5"
+      "rev": "3c5c23b"
     },
     "which-key.nvim": {
       "rev": "3aab214"
