@@ -5,11 +5,11 @@
       "version": "1.0.0 - 2.0.0"
     },
     "conform.nvim": {
-      "rev": "cde4da5"
+      "rev": "1bf8b5b"
     },
     "diffview.nvim": [],
     "gitsigns.nvim": {
-      "rev": "20ad441"
+      "rev": "cdafc32"
     },
     "grug-far.nvim": {
       "rev": "b58b2d6"
@@ -23,13 +23,13 @@
       "version": "1.0.0 - 2.0.0"
     },
     "nvim-dap": {
-      "rev": "b38f7d3"
+      "rev": "5860c7c"
     },
     "nvim-dap-ui": [],
     "nvim-dap-virtual-text": [],
     "nvim-nio": [],
     "nvim-treesitter": {
-      "rev": "0cfa5994",
+      "rev": "bb83a676",
       "version": "'main'"
     },
     "nvim-treesitter-textobjects": {
@@ -40,13 +40,13 @@
       "rev": "8dcb311"
     },
     "opencode.nvim": {
-      "rev": "217d363"
+      "rev": "c3d1bdb"
     },
     "render-markdown.nvim": {
-      "rev": "13bfaaa"
+      "rev": "6e0e890"
     },
     "snacks.nvim": {
-      "rev": "3c5c23b"
+      "rev": "fe7cfe9"
     },
     "which-key.nvim": {
       "rev": "3aab214"
