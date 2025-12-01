@@ -1,5 +1,25 @@
-local util = require("utils.lsp")
 local lsp = vim.lsp
+
+-- ESLint flat config patterns (ESLint 9+)
+local ESLINT_FLAT_CONFIG = {
+	"eslint.config.js",
+	"eslint.config.mjs",
+	"eslint.config.cjs",
+	"eslint.config.ts",
+	"eslint.config.mts",
+	"eslint.config.cts",
+}
+
+local WORKSPACE_ROOT_PATTERNS = {
+	".git",
+	".moon/workspace.yml", -- moon monorepo tool
+	"pnpm-workspace.yaml",
+	"turbo.json",
+	"rush.json",
+	"lerna.json",
+	"nx.json",
+	"package.json",
+}
 
 return {
 	cmd = { "vscode-eslint-language-server", "--stdio" },
@@ -32,30 +52,23 @@ return {
 	root_dir = function(bufnr, on_dir)
 		local fname = vim.api.nvim_buf_get_name(bufnr)
 
-		local workspace_root_patterns = {
-			".git",
-			"pnpm-workspace.yaml",
-			"turbo.json",
-			"rush.json",
-			"lerna.json",
-			"nx.json",
-			"package.json",
-		}
-
-		local workspace_root = vim.fs.dirname(vim.fs.find(workspace_root_patterns, { path = fname, upward = true })[1])
-
-		if not workspace_root then
-			workspace_root = vim.fn.getcwd()
+		-- Only activate if flat config exists (ESLint 9+)
+		local eslint_config = vim.fs.find(ESLINT_FLAT_CONFIG, { path = fname, upward = true })[1]
+		if not eslint_config then
+			on_dir(nil)
+			return
 		end
 
-		on_dir(workspace_root)
+		-- Find workspace root
+		local workspace_root = vim.fs.dirname(vim.fs.find(WORKSPACE_ROOT_PATTERNS, { path = fname, upward = true })[1])
+		on_dir(workspace_root or vim.fn.getcwd())
 	end,
 	settings = {
 		validate = "on",
 		packageManager = nil,
 		useESLintClass = false,
 		experimental = {
-			useFlatConfig = false,
+			useFlatConfig = true, -- ESLint 9+ flat config only
 		},
 		codeActionOnSave = {
 			enable = false,
@@ -82,62 +95,27 @@ return {
 	},
 	before_init = function(_, config)
 		local root_dir = config.root_dir
-
-		if root_dir then
-			config.settings = config.settings or {}
-			config.settings.workspaceFolder = {
-				uri = root_dir,
-				name = vim.fn.fnamemodify(root_dir, ":t"),
-			}
-
-			-- Find the nearest ESLint config from the current file
-			local fname = vim.api.nvim_buf_get_name(0)
-			local eslint_config_patterns = {
-				".eslintrc",
-				".eslintrc.js",
-				".eslintrc.cjs",
-				".eslintrc.yaml",
-				".eslintrc.yml",
-				".eslintrc.json",
-				"eslint.config.js",
-				"eslint.config.mjs",
-				"eslint.config.cjs",
-				"eslint.config.ts",
-				"eslint.config.mts",
-				"eslint.config.cts",
-			}
-
-			-- Add package.json with eslintConfig to patterns
-			eslint_config_patterns = util.insert_package_json(eslint_config_patterns, "eslintConfig", fname)
-
-			local nearest_config = vim.fs.find(eslint_config_patterns, { path = fname, upward = true })[1]
-			local config_dir = nearest_config and vim.fs.dirname(nearest_config) or root_dir
-
-			-- Set working directory to where the ESLint config is found
-			-- This is crucial for monorepos where config might be in a subdirectory
-			config.settings.workingDirectory = {
-				mode = "location",
-				location = config_dir,
-			}
-
-			-- Support flat config
-			local flat_config_files = {
-				"eslint.config.js",
-				"eslint.config.mjs",
-				"eslint.config.cjs",
-				"eslint.config.ts",
-				"eslint.config.mts",
-				"eslint.config.cts",
-			}
-
-			for _, file in ipairs(flat_config_files) do
-				if vim.fn.filereadable(config_dir .. "/" .. file) == 1 then
-					config.settings.experimental = config.settings.experimental or {}
-					config.settings.experimental.useFlatConfig = true
-					break
-				end
-			end
+		if not root_dir then
+			return
 		end
+
+		config.settings = config.settings or {}
+		config.settings.workspaceFolder = {
+			uri = root_dir,
+			name = vim.fn.fnamemodify(root_dir, ":t"),
+		}
+
+		-- Find the nearest ESLint flat config from the current file
+		local fname = vim.api.nvim_buf_get_name(0)
+		local nearest_config = vim.fs.find(ESLINT_FLAT_CONFIG, { path = fname, upward = true })[1]
+		local config_dir = nearest_config and vim.fs.dirname(nearest_config) or root_dir
+
+		-- Set working directory to where the ESLint config is found
+		-- This is crucial for monorepos where config might be in a subdirectory
+		config.settings.workingDirectory = {
+			mode = "location",
+			location = config_dir,
+		}
 	end,
 	handlers = {
 		["eslint/openDoc"] = function(_, result)
