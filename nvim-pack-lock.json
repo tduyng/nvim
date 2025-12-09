@@ -6,7 +6,7 @@
       "version": "1.0.0 - 2.0.0"
     },
     "conform.nvim": {
-      "rev": "4993e07fac6679d0a5005aa7499e0bad2bd39f19",
+      "rev": "ffe26e8df8115c9665d24231f8a49fadb2d611ce",
       "src": "https://github.com/stevearc/conform.nvim"
     },
     "diffview.nvim": {
@@ -55,12 +55,12 @@
       "src": "https://github.com/nvim-neotest/nvim-nio"
     },
     "nvim-treesitter": {
-      "rev": "00c906abb9550e72bc0c640545b5499b9525bb40",
+      "rev": "b6271b678e035a5cbf62d637364f3eeca0890171",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
     "nvim-treesitter-textobjects": {
-      "rev": "dfbf9596f8aa8b4bed5301647485594ff7252955",
+      "rev": "76deedf0f1cec4496ef8d49b6d1f020f6d0c6ec9",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
       "version": "'main'"
     },
@@ -69,7 +69,7 @@
       "src": "https://github.com/nvim-tree/nvim-web-devicons"
     },
     "render-markdown.nvim": {
-      "rev": "6e0e8902dac70fecbdd8ce557d142062a621ec38",
+      "rev": "b2b135347e299ffbf7f4123fb7811899b0c9f4b8",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "snacks.nvim": {
