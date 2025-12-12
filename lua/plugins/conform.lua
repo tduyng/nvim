@@ -6,6 +6,7 @@ require("conform").setup({
 		go = { "goimports", "gofmt" },
 		python = { "ruff_format", "isort", "black", stop_after_first = true },
 		json = { "prettierd", "prettier", "biome", stop_after_first = true },
+		jsonc = { "prettierd", "prettier", "biome", stop_after_first = true },
 		markdown = { "prettierd", "prettier", stop_after_first = true },
 		["markdown.mdx"] = { "prettierd", "prettier", stop_after_first = true },
 		javascript = { "biome", "prettierd", "prettier", "deno_fmt", stop_after_first = true },
