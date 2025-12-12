@@ -217,4 +217,12 @@ map("i", "[", "[]<left>")
 map("i", "{", "{}<left>")
 map("i", "<", "<><left>")
 
+-- vim.pack keymaps
 map("n", "<leader>pu", "<cmd>lua vim.pack.update()<CR>")
+map("n", "<leader>pd", function()
+	vim.ui.input({ prompt = "Plugin name to delete: " }, function(input)
+		if input and input ~= "" then
+			pcall(vim.pack.del, { input })
+		end
+	end)
+end, { desc = "Delete Plugin" })

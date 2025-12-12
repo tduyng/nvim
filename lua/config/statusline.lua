@@ -71,7 +71,6 @@ hi("StatusLocation", { guibg = palette.soft_violet, guifg = palette.light_gray }
 hi("StatusPercent", { guibg = palette.teal, guifg = palette.dark_gray, gui = "bold" })
 
 local fn = vim.fn
-local api = vim.api
 
 -- Git repo/branch with caching - uses gitsigns buffer variables for performance
 local function get_git_branch()
