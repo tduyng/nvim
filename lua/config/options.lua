@@ -129,3 +129,13 @@ vim.filetype.add({
 		["%.env%.[%w_.-]+"] = "dotenv",
 	},
 })
+
+-- Suppress deprecation warnings from plugins (temporary until plugins update)
+-- This silences vim.deprecate() warnings from third-party code
+local notify = vim.notify
+vim.notify = function(msg, level, opts)
+	if type(msg) == "string" and msg:match("deprecated") and msg:match("client%.notify") then
+		return
+	end
+	notify(msg, level, opts)
+end
