@@ -43,8 +43,9 @@
       "version": "1.0.0 - 2.0.0"
     },
     "nvim-dap": {
-      "rev": "cdfd55a133f63228c55f91378f12908cb2a78ded",
-      "src": "https://github.com/mfussenegger/nvim-dap"
+      "rev": "7bb46cc612bb127d7b0e3e9ed695267d830824ec",
+      "src": "https://github.com/mfussenegger/nvim-dap",
+      "version": "'7bb46cc612bb127d7b0e3e9ed695267d830824ec'"
     },
     "nvim-dap-ui": {
       "rev": "cf91d5e2d07c72903d052f5207511bf7ecdb7122",

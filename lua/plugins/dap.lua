@@ -1,5 +1,5 @@
 vim.pack.add({
-	"https://github.com/mfussenegger/nvim-dap",
+	{ src = "https://github.com/mfussenegger/nvim-dap", version = "7bb46cc612bb127d7b0e3e9ed695267d830824ec" },
 	"https://github.com/rcarriga/nvim-dap-ui",
 	"https://github.com/nvim-neotest/nvim-nio",
 	"https://github.com/theHamsta/nvim-dap-virtual-text",
