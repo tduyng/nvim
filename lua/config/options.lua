@@ -130,12 +130,15 @@ vim.filetype.add({
 	},
 })
 
--- Suppress deprecation warnings from plugins (temporary until plugins update)
--- This silences vim.deprecate() warnings from third-party code
-local notify = vim.notify
+-- Completely disable all deprecation warnings from all sources
+-- This suppresses vim.deprecate() warnings from Neovim core and all plugins
+vim.deprecate = function() end
+
+-- Also suppress any deprecation-related vim.notify() calls as backup
+local original_notify = vim.notify
 vim.notify = function(msg, level, opts)
-	if type(msg) == "string" and msg:match("deprecated") and msg:match("client%.notify") then
+	if type(msg) == "string" and msg:find("deprecated", 1, true) then
 		return
 	end
-	notify(msg, level, opts)
+	original_notify(msg, level, opts)
 end
