@@ -6,9 +6,13 @@
       "version": "1.0.0 - 2.0.0"
     },
     "codediff.nvim": {
-      "rev": "f21847c61725070a8cedcb8adefe4cdb14f4c037",
+      "rev": "9b3258557d92de7d2f03955066697ca62aabeb4e",
       "src": "https://github.com/esmuellert/codediff.nvim",
       "version": "2.0.0 - 3.0.0"
+    },
+    "codeme.nvim": {
+      "rev": "076b79d8afc48fe3f5a16643651bba4ab193fa32",
+      "src": "/Users/tien-duy.nguyen/projects/oss/git/codememono/codeme.nvim"
     },
     "conform.nvim": {
       "rev": "238f542a118984a88124fc915d5b981680418707",
@@ -61,12 +65,12 @@
       "src": "https://github.com/nvim-neotest/nvim-nio"
     },
     "nvim-treesitter": {
-      "rev": "5a7e5638e7d220575b1c22c8a2e099b52231886e",
+      "rev": "15b3416cc1f557c4932468e512a0bd45871167bc",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
     "nvim-treesitter-textobjects": {
-      "rev": "d0d12338230c1ce4ce27373f5b8d50a8c691794b",
+      "rev": "baa6b4ec28c8be5e4a96f9b1b6ae9db85ec422f8",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
       "version": "'main'"
     },
