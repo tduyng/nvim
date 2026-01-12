@@ -3,7 +3,7 @@ vim.pack.add({ "https://github.com/stevearc/conform.nvim" })
 require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
-		go = { "goimports", "gofmt" },
+		go = { "goimports", "gofmt", stop_after_first = true },
 		python = { "ruff_format", "isort", "black", stop_after_first = true },
 		json = { "prettierd", "prettier", "biome", stop_after_first = true },
 		jsonc = { "prettierd", "prettier", "biome", stop_after_first = true },
