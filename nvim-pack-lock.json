@@ -172,10 +172,6 @@
       "rev": "fe7cfe9800a182274d0f868a74b7263b8c0c020b",
       "src": "https://github.com/folke/snacks.nvim"
     },
-    "vim-wakatime": {
-      "rev": "d7973b157a632d1edeff01818f18d67e584eeaff",
-      "src": "https://github.com/wakatime/vim-wakatime"
-    },
     "which-key.nvim": {
       "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",
       "src": "https://github.com/folke/which-key.nvim"
