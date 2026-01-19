@@ -160,7 +160,6 @@ Snacks.setup({
 })
 
 vim.api.nvim_create_autocmd("User", {
-	pattern = "VeryLazy",
 	callback = function()
 		Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
 		Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")

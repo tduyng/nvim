@@ -129,17 +129,3 @@ vim.filetype.add({
 		["%.env%.[%w_.-]+"] = "dotenv",
 	},
 })
-
--- Block ALL deprecation notifications (core + plugins)
-local silent_deprecate = function(msg, level, opts)
-	-- Skip deprecation messages entirely
-	if type(msg) == "string" and (msg:match("deprecated") or msg:match("removed") or msg:match("DEPRECATED")) then
-		return
-	end
-
-	-- Forward others
-	vim.notify(msg, level, opts)
-end
-
-vim.notify = silent_deprecate
-vim.deprecate = silent_deprecate -- Also catch core
