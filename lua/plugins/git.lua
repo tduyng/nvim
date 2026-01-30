@@ -98,7 +98,7 @@ require("diffview").setup({
 			winbar_info = true,
 		},
 		merge_tool = {
-			layout = "diff3_mixed",
+			layout = "diff3_horizontal", -- diff3_horizontal | diff3_vertical | diff3_mixed | diff4_mixed
 			disable_diagnostics = true,
 			winbar_info = true,
 		},
