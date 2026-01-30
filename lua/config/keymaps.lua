@@ -208,6 +208,24 @@ map("n", "<leader>tw", "<cmd>set wrap!<CR>", {
 	silent = true,
 })
 
+map("n", "<leader>us", function()
+	local current_state = vim.o.spell
+	local bufnr = vim.api.nvim_get_current_buf()
+
+	if current_state then
+		local clients = vim.lsp.get_clients({ bufnr = bufnr, name = "harper_ls" })
+		for _, client in ipairs(clients) do
+			client:stop()
+		end
+		vim.o.spell = false
+		vim.notify("Disabled Spell + Harper")
+	else
+		vim.o.spell = true
+		vim.lsp.enable("harper_ls", bufnr)
+		vim.notify("Enabled Spell + Harper")
+	end
+end, { desc = "Toggle Spell + Harper" })
+
 -- auto close pairs
 -- map("i", "'", "''<left>")
 map("i", "`", "``<left>")

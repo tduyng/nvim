@@ -6,7 +6,7 @@
       "version": "1.0.0 - 2.0.0"
     },
     "codeme.nvim": {
-      "rev": "1b7eb93e3c11bbec91cc6b6774417192043d1923",
+      "rev": "47477c78147c9593cbd6cf74db2c771bb8184241",
       "src": "/Users/tien-duy.nguyen/projects/oss/git/codememono/codeme.nvim"
     },
     "conform.nvim": {
@@ -64,12 +64,12 @@
       "src": "https://github.com/nvim-neotest/nvim-nio"
     },
     "nvim-treesitter": {
-      "rev": "f8bbc3177d929dc86e272c41cc15219f0a7aa1ac",
+      "rev": "19c729dae6e0eeb79423df0cf37780aa9a7cc3b7",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
     "nvim-treesitter-textobjects": {
-      "rev": "52bda74e087034408e2d563cb4499c1601038f9d",
+      "rev": "a0e182ae21fda68c59d1f36c9ed45600aef50311",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
       "version": "'main'"
     },
@@ -78,7 +78,7 @@
       "src": "https://github.com/nvim-tree/nvim-web-devicons"
     },
     "render-markdown.nvim": {
-      "rev": "73a6ebc842cf81926eb1d424820b800f6f6a1227",
+      "rev": "48934b49a2363b49ae1d698ed4cb30fb79d7efe8",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "snacks.nvim": {
