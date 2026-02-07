@@ -14,8 +14,8 @@
       "src": "https://github.com/stevearc/conform.nvim"
     },
     "diffview.nvim": {
-      "rev": "4516612fe98ff56ae0415a259ff6361a89419b0a",
-      "src": "https://github.com/sindrets/diffview.nvim"
+      "rev": "ecdb020b4ed6b07d729bce268fbc32d8a64c89e0",
+      "src": "https://github.com/dlyongemallo/diffview.nvim"
     },
     "flash.nvim": {
       "rev": "fcea7ff883235d9024dc41e638f164a450c14ca2",
@@ -84,6 +84,10 @@
     "snacks.nvim": {
       "rev": "fe7cfe9800a182274d0f868a74b7263b8c0c020b",
       "src": "https://github.com/folke/snacks.nvim"
+    },
+    "vdiff.nvim": {
+      "rev": "d1ff5b713721335958307a697410dc7e50aa4960",
+      "src": "/Users/tien-duy.nguyen/projects/oss/git/nixhub/apps/vdiff.nvim"
     },
     "which-key.nvim": {
       "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",

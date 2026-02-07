@@ -1,6 +1,6 @@
 vim.pack.add({
 	"https://github.com/lewis6991/gitsigns.nvim",
-	"https://github.com/sindrets/diffview.nvim",
+	"/Users/tien-duy.nguyen/projects/oss/git/nixhub/apps/vdiff.nvim",
 })
 
 -- Setup gitsigns.nvim
@@ -73,158 +73,53 @@ require("gitsigns").setup({
 	end,
 })
 
--- Setup diffview.nvim
-local actions = require("diffview.actions")
-
-require("diffview").setup({
-	diff_binaries = false,
-	enhanced_diff_hl = true, -- Better diff highlighting
-	use_icons = true,
-	show_help_hints = true,
-	watch_index = true,
-	icons = {
-		folder_closed = "",
-		folder_open = "",
-	},
-	signs = {
-		fold_closed = "",
-		fold_open = "",
-		done = "✓",
-	},
-	view = {
-		default = {
-			layout = "diff2_horizontal",
-			disable_diagnostics = true, -- Cleaner view
-			winbar_info = true,
-		},
-		merge_tool = {
-			layout = "diff3_horizontal", -- diff3_horizontal | diff3_vertical | diff3_mixed | diff4_mixed
-			disable_diagnostics = true,
-			winbar_info = true,
-		},
-		file_history = {
-			layout = "diff2_horizontal",
-			disable_diagnostics = true,
-			winbar_info = true,
-		},
-	},
-	file_panel = {
-		listing_style = "tree",
-		tree_options = {
-			flatten_dirs = true,
-			folder_statuses = "only_folded",
-		},
-		win_config = {
-			position = "left",
-			width = 40,
-		},
-	},
-	file_history_panel = {
-		log_options = {
-			git = {
-				single_file = {
-					diff_merges = "combined",
-				},
-				multi_file = {
-					diff_merges = "first-parent",
-				},
-			},
-		},
-		win_config = {
-			position = "bottom",
-			height = 15,
-		},
-	},
-	keymaps = {
-		disable_defaults = false,
-		view = {
-			{ "n", "q", "<Cmd>DiffviewClose<CR>", { desc = "Close diff view" } },
-
-			-- Navigation
-			{ "n", "]c", actions.select_next_entry, { desc = "Next file" } },
-			{ "n", "[c", actions.select_prev_entry, { desc = "Previous file" } },
-			{ "n", "]f", actions.select_next_entry, { desc = "Next file" } },
-			{ "n", "[f", actions.select_prev_entry, { desc = "Previous file" } },
-			-- more easy in macos
-			{ "n", "<C-n>", actions.select_next_entry, { desc = "Next file" } },
-			{ "n", "<C-p>", actions.select_prev_entry, { desc = "Previous file" } },
-
-			-- Toggle file panel
-			{ "n", "<leader>b", actions.toggle_files, { desc = "Toggle file panel" } },
-
-			-- Conflict resolution
-			{ "n", "<leader>co", actions.conflict_choose("ours"), { desc = "Choose OURS" } },
-			{ "n", "<leader>ct", actions.conflict_choose("theirs"), { desc = "Choose THEIRS" } },
-			{ "n", "<leader>cb", actions.conflict_choose("all"), { desc = "Choose BOTH" } },
-			{ "n", "<leader>cx", actions.conflict_choose("none"), { desc = "Delete conflict" } },
-			{ "n", "]x", actions.next_conflict, { desc = "Next conflict" } },
-			{ "n", "[x", actions.prev_conflict, { desc = "Previous conflict" } },
-			{ "n", "<C-j>", actions.next_conflict, { desc = "Next conflict" } },
-			{ "n", "<C-k>", actions.prev_conflict, { desc = "Previous conflict" } },
-
-			-- Keep useful defaults
-			{ "n", "<tab>", actions.select_next_entry, { desc = "Next file" } },
-			{ "n", "<s-tab>", actions.select_prev_entry, { desc = "Previous file" } },
-			{ "n", "gf", actions.goto_file_edit, { desc = "Go to file" } },
-		},
-		diff3 = {
-			-- Conflict resolution in 3-way diff
-			{ { "n", "x" }, "2do", actions.diffget("ours"), { desc = "Get from OURS" } },
-			{ { "n", "x" }, "3do", actions.diffget("theirs"), { desc = "Get from THEIRS" } },
-		},
-		file_panel = {
-			{ "n", "q", "<Cmd>DiffviewClose<CR>", { desc = "Close diff view" } },
-			{ "n", "<cr>", actions.select_entry, { desc = "Open diff" } },
-			{ "n", "o", actions.select_entry, { desc = "Open diff" } },
-			{ "n", "l", actions.select_entry, { desc = "Open diff" } },
-			{ "n", "R", actions.refresh_files, { desc = "Refresh" } },
-			{ "n", "<leader>b", actions.toggle_files, { desc = "Toggle file panel" } },
-			{ "n", "i", actions.listing_style, { desc = "Toggle list/tree" } },
-			{ "n", "-", actions.toggle_stage_entry, { desc = "Stage/unstage" } },
-			{ "n", "S", actions.stage_all, { desc = "Stage all" } },
-			{ "n", "U", actions.unstage_all, { desc = "Unstage all" } },
-			{ "n", "]c", actions.next_entry, { desc = "Next entry" } },
-			{ "n", "[c", actions.prev_entry, { desc = "Previous entry" } },
-		},
-		file_history_panel = {
-			{ "n", "q", "<Cmd>DiffviewClose<CR>", { desc = "Close" } },
-			{ "n", "<cr>", actions.select_entry, { desc = "Open diff" } },
-			{ "n", "o", actions.select_entry, { desc = "Open diff" } },
-			{ "n", "l", actions.select_entry, { desc = "Open diff" } },
-			{ "n", "y", actions.copy_hash, { desc = "Copy commit hash" } },
-			{ "n", "L", actions.open_commit_log, { desc = "Show commit details" } },
-			{ "n", "<leader>b", actions.toggle_files, { desc = "Toggle file panel" } },
-		},
-	},
+-- Setup vdiff.nvim with side-by-side layout (IntelliJ style)
+require("vdiff").setup({
+	diff_layout = "diff2_vertical", -- side-by-side
+	merge_layout = "diff3_vertical", -- 3-way side-by-side
 })
 
--- Git status / changed files view
-vim.keymap.set("n", "<leader>gd", "<Cmd>DiffviewOpen<CR>", { desc = "Diff: git status" })
--- File history views
-vim.keymap.set("n", "<leader>gv", "<Cmd>DiffviewFileHistory<CR>", { desc = "Diff: repo history" })
-vim.keymap.set("n", "<leader>gV", "<Cmd>DiffviewFileHistory %<CR>", { desc = "Diff: current file history" })
-
--- Visual mode: history of selected lines
-vim.keymap.set("v", "<leader>gv", ":'<,'>DiffviewFileHistory<CR>", { desc = "Diff: selection history" })
-
--- Compare with revisions (prompts)
+-- Accepts any ref: branch, commit, tag, HEAD~N, or empty for working tree
+-- Empty or nil = working tree vs HEAD
+-- --staged = staged changes
+-- main = compare with main branch
+-- HEAD~3 = compare with 3 commits ago
+-- abc123 = compare with commit hash
+-- v1.0.0 = compare with tag
 vim.keymap.set("n", "<leader>gc", function()
-	vim.ui.input({ prompt = "Compare revision (ex. main, HEAD~5, main..HEAD): " }, function(refs)
-		if refs and refs:match("%S") then
-			vim.cmd(("DiffviewOpen %s"):format(refs))
-		end
+	vim.ui.input({
+		prompt = "Compare with (branch/commit/tag/HEAD~N, empty=working): ",
+	}, function(ref)
+		vim.cmd("VDiffCompare " .. (ref or ""))
 	end)
-end, { desc = "Diff: compare revisions" })
+end, { desc = "Git: compare (universal)" })
 
-vim.keymap.set("n", "<leader>gC", function()
-	vim.ui.input({ prompt = "File history range (ex. HEAD~1, main..HEAD): " }, function(range)
-		if range and range:match("%S") then
-			vim.cmd(("DiffviewFileHistory --range=%s %%"):format(range))
-		end
+-- Quick shortcuts for common comparisons
+vim.keymap.set("n", "<leader>gd", "<Cmd>VDiffCompare<CR>", { desc = "Git: working tree (all files)" })
+vim.keymap.set("n", "<leader>gD", "<Cmd>VDiffCompare --staged<CR>", { desc = "Git: staged (all files)" })
+
+-- CURRENT FILE DIFF
+-- Same principle: accepts any ref or empty for HEAD
+vim.keymap.set("n", "<leader>gf", "<Cmd>VDiff<CR>", { desc = "Git: diff file vs HEAD" })
+vim.keymap.set("n", "<leader>gF", function()
+	vim.ui.input({ prompt = "Diff file with (ref, empty=HEAD): " }, function(ref)
+		vim.cmd("VDiff " .. (ref or ""))
 	end)
-end, { desc = "Diff: file history with range" })
+end, { desc = "Git: diff file (universal)" })
 
--- Compare two arbitrary files
+-- Shows commit history for entire file
+vim.keymap.set("n", "<leader>gV", "<Cmd>VDiffHistory<CR>", { desc = "Git: file history" })
+
+-- Shows commit history for selected lines only
+vim.keymap.set("v", "<leader>gv", ":'<,'>VDiffRange<CR>", { desc = "Git: line history" })
+
+-- 3-way merge view (LOCAL | RESULT | REMOTE)
+vim.keymap.set("n", "<leader>gm", "<Cmd>VMerge<CR>", { desc = "Git: merge conflicts" })
+
+-- CLOSE ALL VIEWS
+vim.keymap.set("n", "<leader>gx", "<Cmd>VDiffClose<CR>", { desc = "Git: close all" })
+
+-- UTILITY: Compare two arbitrary files (not git-related)
 vim.keymap.set("n", "<leader>g2", function()
 	vim.ui.input({ prompt = "First file: " }, function(file1)
 		if not file1 or not file1:match("%S") then
@@ -236,4 +131,4 @@ vim.keymap.set("n", "<leader>g2", function()
 			end
 		end)
 	end)
-end, { desc = "Diff: Compare 2 files" })
+end, { desc = "Git: compare 2 files" })
