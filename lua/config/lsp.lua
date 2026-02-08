@@ -64,7 +64,6 @@ vim.lsp.enable({
 	"helm_ls",
 	"jsonls",
 	"biome",
-	"harper_ls",
 	-- "yamlls",
 })
 
