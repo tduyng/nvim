@@ -56,7 +56,6 @@ Snacks.setup({
 					"hodor-types/*",
 					"**/target/*",
 					"**/public/*",
-					"**/digest*.txt",
 					"**/.node-gyp/**",
 					"**/claude/debug",
 					"**/claude/file-history",

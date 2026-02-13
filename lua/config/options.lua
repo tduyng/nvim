@@ -119,6 +119,7 @@ vim.g.markdown_recommended_style = 0
 vim.filetype.add({
 	extension = {
 		env = "dotenv",
+		txt = "markdown",
 	},
 	filename = {
 		[".env"] = "dotenv",

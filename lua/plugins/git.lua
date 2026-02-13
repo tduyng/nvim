@@ -97,6 +97,11 @@ end, { desc = "Git: compare (universal)" })
 -- Quick shortcuts for common comparisons
 vim.keymap.set("n", "<leader>gd", "<Cmd>VDiffCompare<CR>", { desc = "Git: working tree (all files)" })
 vim.keymap.set("n", "<leader>gD", "<Cmd>VDiffCompare --staged<CR>", { desc = "Git: staged (all files)" })
+vim.keymap.set("n", "<leader>gV", "<Cmd>VDiffHistory<CR>", { desc = "Git: file history" })
+vim.keymap.set("v", "<leader>gv", ":'<,'>VDiffRange<CR>", { desc = "Git: line history" })
+vim.keymap.set("n", "<leader>gx", "<Cmd>VDiffClose<CR>", { desc = "Git: close all" })
+-- 3-way merge view (LOCAL | RESULT | REMOTE)
+vim.keymap.set("n", "<leader>gm", "<Cmd>VMerge<CR>", { desc = "Git: merge conflicts" })
 
 -- CURRENT FILE DIFF
 -- Same principle: accepts any ref or empty for HEAD
@@ -106,18 +111,6 @@ vim.keymap.set("n", "<leader>gF", function()
 		vim.cmd("VDiff " .. (ref or ""))
 	end)
 end, { desc = "Git: diff file (universal)" })
-
--- Shows commit history for entire file
-vim.keymap.set("n", "<leader>gV", "<Cmd>VDiffHistory<CR>", { desc = "Git: file history" })
-
--- Shows commit history for selected lines only
-vim.keymap.set("v", "<leader>gv", ":'<,'>VDiffRange<CR>", { desc = "Git: line history" })
-
--- 3-way merge view (LOCAL | RESULT | REMOTE)
-vim.keymap.set("n", "<leader>gm", "<Cmd>VMerge<CR>", { desc = "Git: merge conflicts" })
-
--- CLOSE ALL VIEWS
-vim.keymap.set("n", "<leader>gx", "<Cmd>VDiffClose<CR>", { desc = "Git: close all" })
 
 -- UTILITY: Compare two arbitrary files (not git-related)
 vim.keymap.set("n", "<leader>g2", function()
