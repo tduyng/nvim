@@ -6,7 +6,7 @@
       "version": "1.0.0 - 2.0.0"
     },
     "codeme.nvim": {
-      "rev": "0890d3a23a2b54c7ae9ae45168e6c41f0f6a3d8f",
+      "rev": "d7ddff60cd800a93ff741ce5fc90f72b565cacb4",
       "src": "/Users/tien-duy.nguyen/projects/oss/git/codememono/codeme.nvim"
     },
     "conform.nvim": {
@@ -18,7 +18,7 @@
       "src": "https://github.com/folke/flash.nvim"
     },
     "gitsigns.nvim": {
-      "rev": "1ce96a464fdbc24208e24c117e2021794259005d",
+      "rev": "9f3c6dd7868bcc116e9c1c1929ce063b978fa519",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "grug-far.nvim": {
@@ -43,9 +43,8 @@
       "version": "1.0.0 - 2.0.0"
     },
     "nvim-dap": {
-      "rev": "7bb46cc612bb127d7b0e3e9ed695267d830824ec",
-      "src": "https://github.com/mfussenegger/nvim-dap",
-      "version": "'7bb46cc612bb127d7b0e3e9ed695267d830824ec'"
+      "rev": "db321947bb289a2d4d76a32e76e4d2bd6103d7df",
+      "src": "https://github.com/mfussenegger/nvim-dap"
     },
     "nvim-dap-ui": {
       "rev": "cf91d5e2d07c72903d052f5207511bf7ecdb7122",
@@ -60,7 +59,7 @@
       "src": "https://github.com/nvim-neotest/nvim-nio"
     },
     "nvim-treesitter": {
-      "rev": "45a07f869b0cffba342276f2c77ba7c116d35db8",
+      "rev": "ca35dc5184327f9e19b70932190a256235acecb1",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
