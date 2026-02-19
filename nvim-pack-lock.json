@@ -6,12 +6,16 @@
       "version": "1.0.0 - 2.0.0"
     },
     "codeme.nvim": {
-      "rev": "d7ddff60cd800a93ff741ce5fc90f72b565cacb4",
-      "src": "/Users/tien-duy.nguyen/projects/oss/git/codememono/codeme.nvim"
+      "rev": "7c190ad862458bf9f7e411a4e5c816ee70c94ecd",
+      "src": "~/projects/oss/git/codememono/codeme.nvim"
     },
     "conform.nvim": {
-      "rev": "c2526f1cde528a66e086ab1668e996d162c75f4f",
+      "rev": "40dcec5555f960b0a04340d76eabdf4efe78599d",
       "src": "https://github.com/stevearc/conform.nvim"
+    },
+    "dbg.nvim": {
+      "rev": "64933381a049a9d582716f0473df9abb2fd11d2d",
+      "src": "~/projects/oss/git/nixhub/apps/dbg.nvim"
     },
     "flash.nvim": {
       "rev": "fcea7ff883235d9024dc41e638f164a450c14ca2",
@@ -22,7 +26,7 @@
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "grug-far.nvim": {
-      "rev": "275dbedc96e61a6b8d1dfb28ba51586ddd233dcf",
+      "rev": "ac52ee2d87399dfd7b0d59d5b1d2bbaf2a4028f1",
       "src": "https://github.com/MagicDuck/grug-far.nvim"
     },
     "markdown-preview.nvim": {
@@ -43,7 +47,7 @@
       "version": "1.0.0 - 2.0.0"
     },
     "nvim-dap": {
-      "rev": "db321947bb289a2d4d76a32e76e4d2bd6103d7df",
+      "rev": "b516f20b487b0ac6a281e376dfac1d16b5040041",
       "src": "https://github.com/mfussenegger/nvim-dap"
     },
     "nvim-dap-ui": {
@@ -59,7 +63,7 @@
       "src": "https://github.com/nvim-neotest/nvim-nio"
     },
     "nvim-treesitter": {
-      "rev": "ca35dc5184327f9e19b70932190a256235acecb1",
+      "rev": "cb2cb74f3c3cbbcc17e79cada2060165d616d849",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
@@ -69,11 +73,11 @@
       "version": "'main'"
     },
     "nvim-web-devicons": {
-      "rev": "746ffbb17975ebd6c40142362eee1b0249969c5c",
+      "rev": "737cf6c657898d0c697311d79d361288a1343d50",
       "src": "https://github.com/nvim-tree/nvim-web-devicons"
     },
     "render-markdown.nvim": {
-      "rev": "48b4175dbca8439d30c1f52231cbe5a712c8f9d9",
+      "rev": "1641b434bda26e0f4e3610985b3357fc213cf834",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "snacks.nvim": {
@@ -81,8 +85,8 @@
       "src": "https://github.com/folke/snacks.nvim"
     },
     "vdiff.nvim": {
-      "rev": "d1ff5b713721335958307a697410dc7e50aa4960",
-      "src": "/Users/tien-duy.nguyen/projects/oss/git/nixhub/apps/vdiff.nvim"
+      "rev": "d354be7ee27bbcbc2e7d249139783c698577e456",
+      "src": "~/projects/oss/git/nixhub/apps/vdiff.nvim"
     },
     "which-key.nvim": {
       "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",

@@ -1,6 +1,6 @@
 vim.pack.add({
 	"https://github.com/lewis6991/gitsigns.nvim",
-	"/Users/tien-duy.nguyen/projects/oss/git/nixhub/apps/vdiff.nvim",
+	"~/projects/oss/git/nixhub/apps/vdiff.nvim",
 })
 
 -- Setup gitsigns.nvim
@@ -103,6 +103,18 @@ vim.keymap.set("n", "<leader>gc", function()
 		vim.cmd("VDiffCompare " .. (ref or ""))
 	end)
 end, { desc = "Git: compare (universal)" })
+
+-- COMPARE TWO REFS (e.g., branches, commits, tags)
+vim.keymap.set("n", "<leader>gC", function()
+	vim.ui.input({ prompt = "Compare ref1 (default=HEAD): " }, function(ref1)
+		if not ref1 or ref1 == "" then
+			ref1 = "HEAD"
+		end
+		vim.ui.input({ prompt = "Compare ref2: " }, function(ref2)
+			vim.cmd("VDiffCompareRefs " .. ref1 .. " " .. (ref2 or ""))
+		end)
+	end)
+end, { desc = "Git: compare two refs" })
 
 -- Quick shortcuts for common comparisons
 vim.keymap.set("n", "<leader>gd", "<Cmd>VDiffCompare<CR>", { desc = "Git: working tree (all files)" })
