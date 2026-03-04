@@ -5,30 +5,70 @@ require("conform").setup({
 		lua = { "stylua" },
 		go = { "goimports", "gofmt", stop_after_first = true },
 		python = { "ruff_format", "isort", "black", stop_after_first = true },
-		json = { "prettier", "biome", stop_after_first = true },
-		jsonc = { "prettier", "biome", stop_after_first = true },
-		markdown = { "injected", "prettier", stop_after_first = false },
-		["markdown.mdx"] = { "injected", "prettier", stop_after_first = false },
-		javascript = { "biome", "prettier", "deno_fmt", stop_after_first = true },
-		typescript = { "biome", "prettier", "deno_fmt", stop_after_first = true },
-		javascriptreact = { "biome", "prettier", "deno_fmt", "dprint", stop_after_first = true },
-		typescriptreact = { "biome", "prettier", "deno_fmt", "dprint", stop_after_first = true },
-		svelte = { "biome", "prettier", "deno_fmt", "dprint", stop_after_first = true },
-		css = { "biome", "prettier", stop_after_first = true },
-		scss = { "biome", "prettier", stop_after_first = true },
-		html = { "biome", "prettier", stop_after_first = true },
-		vue = { "biome", "prettier", stop_after_first = true },
-		astro = { "biome", "prettier", stop_after_first = true },
-		xml = { "prettier", stop_after_first = true },
+		json = { "oxfmt", "prettier", stop_after_first = true },
+		jsonc = { "oxfmt", "prettier", stop_after_first = true },
+		javascript = { "oxfmt", "prettier", stop_after_first = true },
+		typescript = { "oxfmt", "prettier", stop_after_first = true },
+		javascriptreact = { "oxfmt", "prettier", stop_after_first = true },
+		typescriptreact = { "oxfmt", "prettier", stop_after_first = true },
+		css = { "oxfmt", "prettier", stop_after_first = true },
+		scss = { "oxfmt", "prettier", stop_after_first = true },
+		html = { "oxfmt", "prettier", stop_after_first = true },
+		vue = { "oxfmt", "prettier", stop_after_first = true },
+		svelte = { "oxfmt", "prettier", stop_after_first = true },
+		astro = { "oxfmt", "prettier", stop_after_first = true },
+		yaml = { "oxfmt", "prettier", stop_after_first = true },
+		markdown = { "oxfmt", "prettier", stop_after_first = true },
+		["markdown.mdx"] = { "oxfmt", "prettier", stop_after_first = true },
+		graphql = { "oxfmt", "prettier", stop_after_first = true },
+		xml = { "prettier", stop_after_first = true }, -- oxfmt doesn't support xml
 		toml = { "taplo" },
 		nix = { "nixfmt" },
 	},
+
 	formatters = {
-		prettier = {
+		oxfmt = {
 			args = function(_self, ctx)
 				local search_dir = ctx.dirname or vim.fn.getcwd()
 
-				-- find project-level prettier config
+				-- only search at git root level, not walking up infinitely
+				local git_root =
+					vim.fn.systemlist("git -C " .. vim.fn.shellescape(search_dir) .. " rev-parse --show-toplevel")[1]
+
+				local project_config = nil
+				if git_root and vim.fn.isdirectory(git_root) == 1 then
+					for _, name in ipairs({ ".oxfmtrc.jsonc", ".oxfmtrc.json" }) do
+						local candidate = git_root .. "/" .. name
+						if vim.fn.filereadable(candidate) == 1 then
+							project_config = candidate
+							break
+						end
+					end
+				end
+
+				-- fallback to global ~/.oxfmtrc.jsonc or ~/.oxfmtrc.json
+				if not project_config then
+					for _, candidate in ipairs({
+						vim.fn.expand("~/.oxfmtrc.jsonc"),
+						vim.fn.expand("~/.oxfmtrc.json"),
+					}) do
+						if vim.fn.filereadable(candidate) == 1 then
+							project_config = candidate
+							break
+						end
+					end
+				end
+
+				local args = { "--stdin-filepath", ctx.filename }
+				if project_config then
+					vim.list_extend(args, { "--config", project_config })
+				end
+				return args
+			end,
+		},
+		prettier = {
+			args = function(_self, ctx)
+				local search_dir = ctx.dirname or vim.fn.getcwd()
 				local config_files = {
 					".prettierrc",
 					".prettierrc.json",
@@ -50,67 +90,21 @@ require("conform").setup({
 						break
 					end
 				end
-
-				-- personal overrides per filetype (CLI flags override config file)
-				-- these apply regardless of project or global config
-				local personal_overrides = {
-					graphql = { "--tab-width", "2", "--print-width", "120" },
-					markdown = { "--tab-width", "2", "--prose-wrap", "preserve", "--print-width", "120" },
-					mdx = { "--tab-width", "2", "--prose-wrap", "preserve" },
-					html = { "--tab-width", "2", "--print-width", "120" },
-					css = { "--tab-width", "2" },
-					scss = { "--tab-width", "2" },
-					less = { "--tab-width", "2" },
-					yaml = { "--tab-width", "2", "--no-bracket-spacing" },
-					json = { "--tab-width", "4" },
-					jsonc = { "--tab-width", "4" },
-					javascript = {}, -- fully trust project/global config
-					typescript = {},
-					svelte = { "--tab-width", "2" },
-					vue = { "--tab-width", "2" },
-					astro = { "--tab-width", "2" },
-					xml = { "--tab-width", "2", "--print-width", "120" },
-				}
-
-				local ft = vim.bo[ctx.buf].filetype
-				local overrides = personal_overrides[ft] or {}
-
-				local args = { "--stdin-filepath", ctx.filename }
-
-				-- use project config if found, else fall back to ~/.prettierrc
 				local config = project_config or vim.fn.expand("~/.prettierrc")
-				vim.list_extend(args, { "--config", config })
-
-				-- personal overrides always win (CLI flags beat config file)
-				vim.list_extend(args, overrides)
-
-				return args
+				return { "--config", config, "--stdin-filepath", ctx.filename }
 			end,
 		},
-		biome = { require_cwd = true },
-		deno_fmt = { require_cwd = true },
-		injected = {
-			options = {
-				ignore_errors = true,
-				lang_to_formatters = {
-					graphql = { "prettier" }, -- use prettier for graphql blocks
-				},
-			},
-		},
 	},
-	default_format_opts = {
-		lsp_format = "fallback",
-	},
+	default_format_opts = { lsp_format = "fallback" },
 	format_on_save = function(bufnr)
-		local ignore_filetypes = { "sql", "yaml", "yml" }
+		local ignore_filetypes = { "sql" }
 		if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
 			return
 		end
 		if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
 			return
 		end
-		local bufname = vim.api.nvim_buf_get_name(bufnr)
-		if bufname:match("/node_modules/") then
+		if vim.api.nvim_buf_get_name(bufnr):match("/node_modules/") then
 			return
 		end
 		return { timeout_ms = 500, lsp_format = "fallback" }

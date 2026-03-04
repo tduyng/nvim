@@ -6,7 +6,7 @@
       "version": "1.0.0 - 2.0.0"
     },
     "codeme.nvim": {
-      "rev": "7c190ad862458bf9f7e411a4e5c816ee70c94ecd",
+      "rev": "7c96609c91103b4f44f568a76822cd7b4ef42653",
       "src": "~/projects/oss/git/codememono/codeme.nvim"
     },
     "conform.nvim": {
@@ -22,7 +22,7 @@
       "src": "https://github.com/folke/flash.nvim"
     },
     "gitsigns.nvim": {
-      "rev": "9f3c6dd7868bcc116e9c1c1929ce063b978fa519",
+      "rev": "7c4faa3540d0781a28588cafbd4dd187a28ac6e3",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "grug-far.nvim": {
@@ -47,8 +47,9 @@
       "version": "1.0.0 - 2.0.0"
     },
     "nvim-dap": {
-      "rev": "b516f20b487b0ac6a281e376dfac1d16b5040041",
-      "src": "https://github.com/mfussenegger/nvim-dap"
+      "rev": "db321947bb289a2d4d76a32e76e4d2bd6103d7df",
+      "src": "https://github.com/mfussenegger/nvim-dap",
+      "version": "'b516f20b487b0ac6a281e376dfac1d16b5040041'"
     },
     "nvim-dap-ui": {
       "rev": "cf91d5e2d07c72903d052f5207511bf7ecdb7122",
@@ -63,12 +64,12 @@
       "src": "https://github.com/nvim-neotest/nvim-nio"
     },
     "nvim-treesitter": {
-      "rev": "972f378653c794b0ff82282a844732695064b70f",
+      "rev": "ebe76eb800d4e8df754fc96f8a7b84f578224a97",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
     "nvim-treesitter-textobjects": {
-      "rev": "a0e182ae21fda68c59d1f36c9ed45600aef50311",
+      "rev": "0bc4ef0a34d80fd6e67b59bd71fcbb0ef9ef4756",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
       "version": "'main'"
     },
@@ -77,7 +78,7 @@
       "src": "https://github.com/nvim-tree/nvim-web-devicons"
     },
     "render-markdown.nvim": {
-      "rev": "1641b434bda26e0f4e3610985b3357fc213cf834",
+      "rev": "907505549edc2f90c82fc429348af03ee8c3a825",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "snacks.nvim": {

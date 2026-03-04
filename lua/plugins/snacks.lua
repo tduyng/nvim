@@ -134,7 +134,7 @@ Snacks.setup({
 				tree = true,
 				watch = true,
 				exclude = {
-					".git",
+					-- ".git",
 					".yarn/cache/**",
 					".yarn/install/**",
 					".yarn/install*",
