@@ -7,8 +7,8 @@ require("conform").setup({
 		python = { "ruff_format", "isort", "black", stop_after_first = true },
 		json = { "prettier", "biome", stop_after_first = true },
 		jsonc = { "prettier", "biome", stop_after_first = true },
-		markdown = { "prettier", stop_after_first = true },
-		["markdown.mdx"] = { "prettier", stop_after_first = true },
+		markdown = { "injected", "prettier", stop_after_first = false },
+		["markdown.mdx"] = { "injected", "prettier", stop_after_first = false },
 		javascript = { "biome", "prettier", "deno_fmt", stop_after_first = true },
 		typescript = { "biome", "prettier", "deno_fmt", stop_after_first = true },
 		javascriptreact = { "biome", "prettier", "deno_fmt", "dprint", stop_after_first = true },
@@ -24,8 +24,79 @@ require("conform").setup({
 		nix = { "nixfmt" },
 	},
 	formatters = {
+		prettier = {
+			args = function(_self, ctx)
+				local search_dir = ctx.dirname or vim.fn.getcwd()
+
+				-- find project-level prettier config
+				local config_files = {
+					".prettierrc",
+					".prettierrc.json",
+					".prettierrc.yaml",
+					".prettierrc.yml",
+					".prettierrc.js",
+					".prettierrc.cjs",
+					".prettierrc.mjs",
+					"prettier.config.js",
+					"prettier.config.cjs",
+					"prettier.config.mjs",
+					"prettier.config.ts",
+				}
+				local project_config = nil
+				for _, name in ipairs(config_files) do
+					local found = vim.fn.findfile(name, search_dir .. ";")
+					if found and found ~= "" then
+						project_config = found
+						break
+					end
+				end
+
+				-- personal overrides per filetype (CLI flags override config file)
+				-- these apply regardless of project or global config
+				local personal_overrides = {
+					graphql = { "--tab-width", "2", "--print-width", "120" },
+					markdown = { "--tab-width", "2", "--prose-wrap", "preserve", "--print-width", "120" },
+					mdx = { "--tab-width", "2", "--prose-wrap", "preserve" },
+					html = { "--tab-width", "2", "--print-width", "120" },
+					css = { "--tab-width", "2" },
+					scss = { "--tab-width", "2" },
+					less = { "--tab-width", "2" },
+					yaml = { "--tab-width", "2", "--no-bracket-spacing" },
+					json = { "--tab-width", "4" },
+					jsonc = { "--tab-width", "4" },
+					javascript = {}, -- fully trust project/global config
+					typescript = {},
+					svelte = { "--tab-width", "2" },
+					vue = { "--tab-width", "2" },
+					astro = { "--tab-width", "2" },
+					xml = { "--tab-width", "2", "--print-width", "120" },
+				}
+
+				local ft = vim.bo[ctx.buf].filetype
+				local overrides = personal_overrides[ft] or {}
+
+				local args = { "--stdin-filepath", ctx.filename }
+
+				-- use project config if found, else fall back to ~/.prettierrc
+				local config = project_config or vim.fn.expand("~/.prettierrc")
+				vim.list_extend(args, { "--config", config })
+
+				-- personal overrides always win (CLI flags beat config file)
+				vim.list_extend(args, overrides)
+
+				return args
+			end,
+		},
 		biome = { require_cwd = true },
 		deno_fmt = { require_cwd = true },
+		injected = {
+			options = {
+				ignore_errors = true,
+				lang_to_formatters = {
+					graphql = { "prettier" }, -- use prettier for graphql blocks
+				},
+			},
+		},
 	},
 	default_format_opts = {
 		lsp_format = "fallback",
