@@ -5,6 +5,22 @@ end
 
 local default_keymaps = {
 	{ keys = "<leader>ca", func = vim.lsp.buf.code_action, desc = "Code Actions" },
+	{
+		keys = "<leader>cl",
+		func = function()
+			if vim.fn.exists(":LspOxlintFixAll") > 0 then
+				vim.cmd("LspOxlintFixAll")
+			elseif vim.fn.exists(":LspEslintFixAll") > 0 then
+				vim.cmd("LspEslintFixAll")
+			else
+				vim.lsp.buf.code_action({
+					apply = true,
+					context = { only = { "source.fixAll" }, diagnostics = {} },
+				})
+			end
+		end,
+		desc = "LSP Fix All",
+	},
 	{ keys = "<leader>cr", func = vim.lsp.buf.rename, desc = "Code Rename" },
 	{ keys = "<leader>k", func = vim.lsp.buf.hover, desc = "Hover Documentation", has = "hoverProvider" },
 	{ keys = "K", func = vim.lsp.buf.hover, desc = "Hover (alt)", has = "hoverProvider" },
@@ -69,7 +85,8 @@ local ts_server = vim.g.lsp_typescript_server or "vtsls"
 -- Enable LSP servers for Neovim 0.11+
 vim.lsp.enable({
 	ts_server,
-	"eslint",
+	"oxlint", -- Priority linter
+	"eslint", -- Fallback linter
 	"lua_ls",
 	"gopls",
 	"rust_analyser",

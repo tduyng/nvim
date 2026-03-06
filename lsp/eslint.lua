@@ -10,6 +10,15 @@ local ESLINT_FLAT_CONFIG = {
 	"eslint.config.cts",
 }
 
+local OXLINT_CONFIG = {
+	".oxlintrc.json",
+	".oxlintrc.jsonc",
+	"oxlint.config.ts",
+	"oxlint.config.js",
+	"oxlint.config.mjs",
+	"oxlint.config.cjs",
+}
+
 local WORKSPACE_ROOT_PATTERNS = {
 	".git",
 	".moon/workspace.yml", -- moon monorepo tool
@@ -50,18 +59,27 @@ return {
 		end, {})
 	end,
 	root_dir = function(bufnr, on_dir)
+		-- Find workspace root first to limit upward searches, leveraging vim.fs.root cache
+		local workspace_root = vim.fs.root(bufnr, WORKSPACE_ROOT_PATTERNS) or vim.fn.getcwd()
+		local stop_dir = vim.fs.dirname(workspace_root)
+
 		local fname = vim.api.nvim_buf_get_name(bufnr)
 
+		-- Priority: If Oxlint is found, disable ESLint
+		local oxlint_config = vim.fs.find(OXLINT_CONFIG, { path = fname, upward = true, stop = stop_dir })[1]
+		if oxlint_config then
+			on_dir(nil)
+			return
+		end
+
 		-- Only activate if flat config exists (ESLint 9+)
-		local eslint_config = vim.fs.find(ESLINT_FLAT_CONFIG, { path = fname, upward = true })[1]
+		local eslint_config = vim.fs.find(ESLINT_FLAT_CONFIG, { path = fname, upward = true, stop = stop_dir })[1]
 		if not eslint_config then
 			on_dir(nil)
 			return
 		end
 
-		-- Find workspace root
-		local workspace_root = vim.fs.dirname(vim.fs.find(WORKSPACE_ROOT_PATTERNS, { path = fname, upward = true })[1])
-		on_dir(workspace_root or vim.fn.getcwd())
+		on_dir(workspace_root)
 	end,
 	settings = {
 		validate = "on",
@@ -107,7 +125,8 @@ return {
 
 		-- Find the nearest ESLint flat config from the current file
 		local fname = vim.api.nvim_buf_get_name(0)
-		local nearest_config = vim.fs.find(ESLINT_FLAT_CONFIG, { path = fname, upward = true })[1]
+		local stop_dir = vim.fs.dirname(root_dir)
+		local nearest_config = vim.fs.find(ESLINT_FLAT_CONFIG, { path = fname, upward = true, stop = stop_dir })[1]
 		local config_dir = nearest_config and vim.fs.dirname(nearest_config) or root_dir
 
 		-- Set working directory to where the ESLint config is found
