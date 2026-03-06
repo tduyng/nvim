@@ -2,13 +2,21 @@ local function augroup(name)
 	return vim.api.nvim_create_augroup("user_" .. name, { clear = true })
 end
 
--- Check if we need to reload the file when it changed
+local _checktime_timer = nil
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
 	group = augroup("checktime"),
 	callback = function()
-		if vim.o.buftype ~= "nofile" then
-			vim.cmd("checktime")
+		if _checktime_timer then
+			_checktime_timer:stop()
+			_checktime_timer:close()
+			_checktime_timer = nil
 		end
+		_checktime_timer = vim.defer_fn(function()
+			_checktime_timer = nil
+			if vim.o.buftype ~= "nofile" then
+				vim.cmd("checktime")
+			end
+		end, 200) -- 200ms debounce
 	end,
 })
 
@@ -20,13 +28,21 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
--- resize splits if window got resized
+local _resize_timer = nil
 vim.api.nvim_create_autocmd({ "VimResized" }, {
 	group = augroup("resize_splits"),
 	callback = function()
+		if _resize_timer then
+			_resize_timer:stop()
+			_resize_timer:close()
+			_resize_timer = nil
+		end
 		local current_tab = vim.fn.tabpagenr()
-		vim.cmd("tabdo wincmd =")
-		vim.cmd("tabnext " .. current_tab)
+		_resize_timer = vim.defer_fn(function()
+			_resize_timer = nil
+			vim.cmd("tabdo wincmd =")
+			vim.cmd("tabnext " .. current_tab)
+		end, 100)
 	end,
 })
 
@@ -49,12 +65,27 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "*",
+	group = augroup("iskeyword_kebab"),
+	pattern = { "css", "scss", "less", "html", "htmldjango", "blade", "typescriptreact", "javascriptreact" },
 	callback = function()
-		vim.bo.tabstop = 2
-		vim.bo.shiftwidth = 2
-		vim.bo.softtabstop = 2
-		vim.bo.expandtab = true
+		vim.opt_local.iskeyword:append("-")
+	end,
+})
+
+vim.api.nvim_create_autocmd("InsertEnter", {
+	group = augroup("insert_ui_perf"),
+	callback = function()
+		vim.wo.cursorline = false
+		vim.wo.relativenumber = false
+		vim.wo.number = true -- keep absolute numbers
+	end,
+})
+
+vim.api.nvim_create_autocmd("InsertLeave", {
+	group = augroup("insert_ui_perf"),
+	callback = function()
+		vim.wo.cursorline = true
+		vim.wo.relativenumber = true
 	end,
 })
 

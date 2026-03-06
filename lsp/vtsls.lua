@@ -1,7 +1,10 @@
 local ROOT_MARKERS = { "tsconfig.json", "jsconfig.json", "package.json", ".git" }
 
--- Check if current node version is >= 20
+local _vtsls_cmd = nil
 local function get_vtsls_cmd()
+	if _vtsls_cmd then
+		return _vtsls_cmd
+	end
 	local handle = io.popen("node --version 2>/dev/null")
 	if handle then
 		local version = handle:read("*l")
@@ -9,12 +12,14 @@ local function get_vtsls_cmd()
 		if version then
 			local major = tonumber(version:match("^v?(%d+)"))
 			if major and major >= 20 then
-				return { "vtsls", "--stdio" }
+				_vtsls_cmd = { "vtsls", "--stdio" }
+				return _vtsls_cmd
 			end
 		end
 	end
 	-- Node < 20 or not found, use fnm with Node 24
-	return { "fnm", "exec", "--using=24", "vtsls", "--stdio" }
+	_vtsls_cmd = { "fnm", "exec", "--using=24", "vtsls", "--stdio" }
+	return _vtsls_cmd
 end
 
 return {

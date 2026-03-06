@@ -47,12 +47,8 @@ vim.diagnostic.config({
 		prefix = "●",
 	},
 
-	-- NEW in 0.11 — dim whole line
 	linehl = {
 		[sev.ERROR] = "DiagnosticErrorLine",
-		[sev.WARN] = "DiagnosticWarnLine",
-		[sev.INFO] = "DiagnosticInfoLine",
-		[sev.HINT] = "DiagnosticHintLine",
 	},
 })
 

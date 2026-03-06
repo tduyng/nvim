@@ -23,14 +23,29 @@ vim.api.nvim_create_autocmd("LspAttach", {
 				vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
 			end
 
-			-- Inlay hints
 			if client:supports_method("textDocument/inlayHints") then
-				vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+				vim.lsp.inlay_hint.enable(true, { bufnr = buf })
+
+				if not vim.b[buf].inlay_hints_autocmd_set then
+					vim.api.nvim_create_autocmd("InsertEnter", {
+						buffer = buf,
+						callback = function()
+							vim.lsp.inlay_hint.enable(false, { bufnr = buf })
+						end,
+					})
+					vim.api.nvim_create_autocmd("InsertLeave", {
+						buffer = buf,
+						callback = function()
+							vim.lsp.inlay_hint.enable(true, { bufnr = buf })
+						end,
+					})
+					vim.b[buf].inlay_hints_autocmd_set = true
+				end
 			end
 
 			if client:supports_method("textDocument/documentColor") then
-				vim.lsp.document_color.enable(true, args.buf, {
-					style = "background", -- 'background', 'foreground', or 'virtual'
+				vim.lsp.document_color.enable(true, buf, {
+					style = "virtual",
 				})
 			end
 

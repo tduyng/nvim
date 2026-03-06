@@ -72,6 +72,49 @@ hi("StatusPercent", { guibg = palette.teal, guifg = palette.dark_gray, gui = "bo
 
 local fn = vim.fn
 
+local _diag_cache = {} -- [bufnr] -> { e=n, w=n, i=n, h=n }
+
+vim.api.nvim_create_autocmd("DiagnosticChanged", {
+	callback = function(args)
+		local buf = args.buf
+		local sev = vim.diagnostic.severity
+		local counts = vim.diagnostic.count(buf)
+		_diag_cache[buf] = {
+			e = counts[sev.ERROR] or 0,
+			w = counts[sev.WARN] or 0,
+			i = counts[sev.INFO] or 0,
+			h = counts[sev.HINT] or 0,
+		}
+	end,
+})
+
+local _wc_state = { words = 0, timer = nil }
+
+vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI", "BufEnter" }, {
+	callback = function()
+		local ft = vim.bo.filetype
+		if not (ft:match("md") or ft:match("markdown") or ft == "text") then
+			return
+		end
+		if _wc_state.timer then
+			_wc_state.timer:stop()
+			_wc_state.timer:close()
+		end
+		_wc_state.timer = vim.defer_fn(function()
+			_wc_state.timer = nil
+			_wc_state.words = fn.wordcount().words or 0
+		end, 500)
+	end,
+})
+
+local _icon_cache = {} -- [bufnr] -> icon string
+
+vim.api.nvim_create_autocmd({ "BufWipeout", "BufDelete" }, {
+	callback = function(args)
+		_icon_cache[args.buf] = nil
+	end,
+})
+
 -- Git repo/branch with caching - uses gitsigns buffer variables for performance
 local function get_git_branch()
 	local branch = vim.b.gitsigns_head
@@ -113,35 +156,20 @@ end
 
 -- Diagnostics symbols
 local function get_diagnostics()
-	if not vim.diagnostic then
-		return ""
-	end
-	local d = vim.diagnostic.get(0)
-	local e, w, i, h = 0, 0, 0, 0
-	for _, v in ipairs(d) do
-		if v.severity == vim.diagnostic.severity.ERROR then
-			e = e + 1
-		elseif v.severity == vim.diagnostic.severity.WARN then
-			w = w + 1
-		elseif v.severity == vim.diagnostic.severity.INFO then
-			i = i + 1
-		elseif v.severity == vim.diagnostic.severity.HINT then
-			h = h + 1
-		end
-	end
-
+	local buf = vim.api.nvim_get_current_buf()
+	local c = _diag_cache[buf] or {}
 	local s = ""
-	if e > 0 then
-		s = s .. "%#StatusErrorIcon# " .. e .. " "
+	if (c.e or 0) > 0 then
+		s = s .. "%#StatusErrorIcon# " .. c.e .. " "
 	end
-	if w > 0 then
-		s = s .. "%#StatusWarnIcon# " .. w .. " "
+	if (c.w or 0) > 0 then
+		s = s .. "%#StatusWarnIcon# " .. c.w .. " "
 	end
-	if i > 0 then
-		s = s .. "%#StatusInfoIcon# " .. i .. " "
+	if (c.i or 0) > 0 then
+		s = s .. "%#StatusInfoIcon# " .. c.i .. " "
 	end
-	if h > 0 then
-		s = s .. "%#StatusHintIcon# " .. h .. " "
+	if (c.h or 0) > 0 then
+		s = s .. "%#StatusHintIcon# " .. c.h .. " "
 	end
 
 	-- reset to StatusLine for following text
@@ -150,21 +178,33 @@ end
 
 -- File icon
 local function get_file_icon()
+	local bufnr = vim.api.nvim_get_current_buf()
+	if _icon_cache[bufnr] ~= nil then
+		return _icon_cache[bufnr]
+	end
+
 	local ok, icons = pcall(require, "nvim-web-devicons")
 	if not ok then
+		_icon_cache[bufnr] = ""
 		return ""
 	end
-	local f = fn.expand("%:t")
-	local e = fn.expand("%:e")
+	local name = vim.api.nvim_buf_get_name(bufnr)
+	local f = fn.fnamemodify(name, ":t")
+	local e = fn.fnamemodify(name, ":e")
 	local icon = icons.get_icon(f, e, { default = true })
-	return icon and icon .. " " or ""
+	local result = icon and icon .. " " or ""
+	_icon_cache[bufnr] = result
+	return result
 end
 
 -- Word count & reading time
 local function word_reading()
 	local ft = vim.bo.filetype
 	if ft:match("md") or ft:match("markdown") or ft == "text" then
-		local w = fn.wordcount().words or 0
+		local w = _wc_state.words
+		if w == 0 then
+			return ""
+		end
 		return w .. "w " .. " " .. math.ceil(w / 200) .. "m"
 	end
 	return ""

@@ -4,6 +4,24 @@ local SEP = "" -- separator glyph at buffer boundary
 local CLOSE = "" -- close icon shown on active buffer
 local NO_NAME = "[NO NAME]"
 
+local _tab_cache = nil -- cached rendered string
+local _tab_cache_buf = nil -- bufnr when cache was built
+
+local _tab_invalidate_events = {
+	"BufAdd",
+	"BufDelete",
+	"BufWipeout",
+	"BufFilePost", -- buffer renamed
+	"BufModifiedSet", -- modified flag changed (shows/hides the indicator)
+}
+
+vim.api.nvim_create_autocmd(_tab_invalidate_events, {
+	group = vim.api.nvim_create_augroup("MyTablineCache", { clear = true }),
+	callback = function()
+		_tab_cache = nil
+	end,
+})
+
 function M.set_highlights()
 	vim.api.nvim_set_hl(0, "MyBufInactive", { fg = "#ABB2BF", bg = "#282C34" })
 	vim.api.nvim_set_hl(0, "MyBufActive", { fg = "#ECEFF4", bg = "#3E4451", bold = true })
@@ -72,27 +90,15 @@ local function render_buf(bufnr, current)
 	end
 end
 
-function M.tabline()
-	local current = vim.api.nvim_get_current_buf()
-	local parts = {}
-
-	for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-		local chunk = render_buf(bufnr, current)
-		if chunk ~= "" then
-			table.insert(parts, chunk)
-		end
-	end
-
-	if #parts == 0 then
-		return ""
-	end
-	return table.concat(parts):gsub(vim.pesc(SEP) .. "$", "")
-end
-
 function _G.tabline()
 	local current = vim.api.nvim_get_current_buf()
-	local parts = {}
 
+	-- Return cached string if the buffer list and active buffer haven't changed
+	if _tab_cache and _tab_cache_buf == current then
+		return _tab_cache
+	end
+
+	local parts = {}
 	-- Iterate listed buffers in ascending handle order for stability
 	for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
 		local chunk = render_buf(bufnr, current)
@@ -102,12 +108,17 @@ function _G.tabline()
 	end
 
 	if #parts == 0 then
+		_tab_cache = ""
+		_tab_cache_buf = current
 		return ""
 	end
 
 	local line = table.concat(parts)
 	-- Trim trailing separator if present
-	return line:gsub(vim.pesc(SEP) .. "$", "")
+	local result = line:gsub(vim.pesc(SEP) .. "$", "")
+	_tab_cache = result
+	_tab_cache_buf = current
+	return result
 end
 
 function M.setup()
@@ -145,3 +156,5 @@ vim.keymap.set("n", "<leader>br", function()
 end, { desc = "Close all right buffers" })
 
 M.setup()
+
+return M

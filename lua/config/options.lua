@@ -47,7 +47,8 @@ opt.swapfile = false -- Don't create swap files
 opt.undofile = true -- Persistent undo
 opt.undolevels = 10000
 opt.undodir = vim.fn.expand("~/.vim/undodir") -- Undo directory
-opt.updatetime = 300 -- Faster completion
+
+opt.updatetime = 500
 opt.timeoutlen = vim.g.vscode and 1000 or 300 -- Lower than default (1000) to quickly trigger which-key
 opt.ttimeoutlen = 0 -- Key code timeout
 opt.autoread = true -- Auto reload files changed outside vim
@@ -58,7 +59,7 @@ opt.hidden = true -- Allow hidden buffers
 opt.errorbells = false -- No error bells
 opt.backspace = "indent,eol,start" -- Better backspace behavior
 opt.autochdir = false -- Don't auto change directory
-opt.iskeyword:append("-") -- Treat dash as part of word
+
 opt.path:append("**") -- include subdirectories in search
 opt.selection = "exclusive" -- Selection behavior
 opt.mouse = "a" -- Enable mouse support
@@ -67,8 +68,8 @@ opt.modifiable = true -- Allow buffer modifications
 opt.encoding = "UTF-8" -- Set encoding
 
 -- Folding settings
-opt.smoothscroll = true
-vim.wo.foldmethod = "expr"
+opt.smoothscroll = false
+vim.wo.foldmethod = "manual"
 opt.foldlevel = 99 -- Start with all folds open
 opt.formatoptions = "jcroqlnt" -- tcqj
 opt.grepformat = "%f:%l:%c:%m"

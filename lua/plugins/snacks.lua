@@ -7,7 +7,29 @@ local Snacks = require("snacks")
 
 Snacks.setup({
 	animate = { enabled = true },
-	bigfile = { enabled = true },
+	bigfile = {
+		enabled = true,
+		size = 1.5 * 1024 * 1024, -- 1.5MB threshold
+		setup = function(ctx)
+			-- Disable treesitter (disables highlights, folds, indentexpr)
+			vim.cmd("syntax clear")
+			vim.treesitter.stop(ctx.buf)
+			vim.wo[0].foldmethod = "manual"
+			vim.wo[0].foldexpr = ""
+
+			-- Disable LSP features that are expensive on large files
+			vim.schedule(function()
+				vim.lsp.inlay_hint.enable(false, { bufnr = ctx.buf })
+				vim.lsp.document_color.enable(false, ctx.buf)
+			end)
+
+			-- Keep diagnostics off for huge files
+			vim.diagnostic.enable(false, { bufnr = ctx.buf })
+
+			-- Disable indent guides
+			vim.b[ctx.buf].snacks_indent = false
+		end,
+	},
 	dashboard = { enabled = false },
 	dim = { enabled = true },
 	explorer = { enabled = true, replace_netrw = true },
@@ -160,29 +182,41 @@ Snacks.setup({
 	},
 })
 
-vim.api.nvim_create_autocmd("User", {
+vim.api.nvim_create_autocmd("VimEnter", {
+	once = true, -- run exactly once
 	callback = function()
-		-- Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
-		Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
-		Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>uL")
-		Snacks.toggle.diagnostics():map("<leader>ud")
-		Snacks.toggle.line_number():map("<leader>ul")
-		Snacks.toggle
-			.option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = "Conceal Level" })
-			:map("<leader>uc")
-		Snacks.toggle
-			.option("showtabline", { off = 0, on = vim.o.showtabline > 0 and vim.o.showtabline or 2, name = "Tabline" })
-			:map("<leader>uA")
-		Snacks.toggle.treesitter():map("<leader>uT")
-		Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
-		Snacks.toggle.dim():map("<leader>uD")
-		Snacks.toggle.animate():map("<leader>ua")
-		Snacks.toggle.indent():map("<leader>ug")
-		Snacks.toggle.scroll():map("<leader>uS")
-		Snacks.toggle.profiler():map("<leader>dpp")
-		Snacks.toggle.profiler_highlights():map("<leader>dph")
-		Snacks.toggle.zoom():map("<leader>wm"):map("<leader>uZ")
-		Snacks.toggle.zen():map("<leader>uz")
+		-- Run after everything is loaded — safe with vim.pack
+		vim.schedule(function()
+			-- Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
+			Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
+			Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>uL")
+			Snacks.toggle.diagnostics():map("<leader>ud")
+			Snacks.toggle.line_number():map("<leader>ul")
+			Snacks.toggle
+				.option("conceallevel", {
+					off = 0,
+					on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2,
+					name = "Conceal Level",
+				})
+				:map("<leader>uc")
+			Snacks.toggle
+				.option("showtabline", {
+					off = 0,
+					on = vim.o.showtabline > 0 and vim.o.showtabline or 2,
+					name = "Tabline",
+				})
+				:map("<leader>uA")
+			Snacks.toggle.treesitter():map("<leader>uT")
+			Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
+			Snacks.toggle.dim():map("<leader>uD")
+			Snacks.toggle.animate():map("<leader>ua")
+			Snacks.toggle.indent():map("<leader>ug")
+			Snacks.toggle.scroll():map("<leader>uS")
+			Snacks.toggle.profiler():map("<leader>dpp")
+			Snacks.toggle.profiler_highlights():map("<leader>dph")
+			Snacks.toggle.zoom():map("<leader>wm"):map("<leader>uZ")
+			Snacks.toggle.zen():map("<leader>uz")
+		end)
 	end,
 })
 
