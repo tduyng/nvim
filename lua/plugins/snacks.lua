@@ -91,6 +91,7 @@ Snacks.setup({
 					"**/claude/telemetry",
 					"**/claude/todos",
 					"**/claude/history.jsonl",
+					"**/claude/*cache*",
 				},
 			},
 			grep = {
@@ -137,6 +138,7 @@ Snacks.setup({
 					"**/claude/telemetry",
 					"**/claude/todos",
 					"**/claude/history.jsonl",
+					"**/claude/*cache*",
 				},
 			},
 			grep_buffers = {},
@@ -176,6 +178,7 @@ Snacks.setup({
 					"**/claude/telemetry",
 					"**/claude/todos",
 					"**/claude/history.jsonl",
+					"**/claude/*cache*",
 				},
 			},
 		},
