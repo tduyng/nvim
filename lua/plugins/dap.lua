@@ -39,27 +39,32 @@ local function init_dap()
 		end
 	end
 
-	-- JS/TS configurations
+	-- Disable default nvim-dap behavior of automatically loading .vscode/launch.json
+	dap.providers.configs["dap.launch.json"] = function()
+		return {}
+	end
+
+	-- JS/TS configurations based on user's launch.json
 	local js_filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" }
 	for _, ft in ipairs(js_filetypes) do
 		dap.configurations[ft] = {
 			{
 				type = "pwa-node",
 				request = "attach",
-				name = "Neovim node.js",
+				name = "Nvim Debug App",
 				port = 9229,
 				address = "localhost",
 				localRoot = vim.fn.getcwd(),
 				remoteRoot = "/usr/src/app",
-				cwd = vim.fn.getcwd(),
 				sourceMaps = true,
 				protocol = "inspector",
+				cwd = vim.fn.getcwd(),
 			},
 			{
 				type = "pwa-node",
 				request = "launch",
-				name = "Neovim mocha",
-				program = "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+				name = "Nvim Mocha Tests",
+				program = vim.fn.getcwd() .. "/node_modules/mocha/bin/_mocha",
 				args = {
 					"--require",
 					"ts-node/register/transpile-only",
@@ -68,31 +73,16 @@ local function init_dap()
 					"--reporter",
 					"spec",
 					"--colors",
-					"${workspaceFolder}/tests/unit/**/*.[tj]s",
+					vim.fn.getcwd() .. "/tests/unit/**/*.[tj]s",
 				},
-				cwd = vim.fn.getcwd(),
-				runtimeExecutable = "node",
 				internalConsoleOptions = "openOnSessionStart",
 				skipFiles = { "<node_internals>/**" },
 				sourceMaps = true,
 				protocol = "inspector",
-			},
-			{
-				type = "pwa-node",
-				request = "launch",
-				name = "Neovim Jest",
-				program = "${workspaceFolder}/node_modules/jest/bin/jest.js",
-				args = { "--runInBand", "--no-cache", "${relativeFile}" },
-				cwd = "${workspaceFolder}",
-				runtimeExecutable = "node",
-				console = "integratedTerminal",
-				internalConsoleOptions = "neverOpen",
-				sourceMaps = true,
-				skipFiles = { "<node_internals>/**" },
+				cwd = vim.fn.getcwd(),
 			},
 		}
 	end
-
 	-- DAP UI setup
 	dapui.setup({
 		icons = { expanded = "▾", collapsed = "▸", current_frame = "*" },
@@ -111,7 +101,7 @@ local function init_dap()
 		},
 	})
 
-	-- Auto-open/close UI
+	-- -- Auto-open/close UI
 	dap.listeners.after.event_initialized["dapui_config"] = function()
 		dapui.open({})
 	end
@@ -125,7 +115,7 @@ local function init_dap()
 		dapui.close({})
 	end
 
-	-- Virtual text
+	-- -- Virtual text
 	require("nvim-dap-virtual-text").setup()
 end
 
