@@ -59,18 +59,19 @@ return {
 		end, {})
 	end,
 	root_dir = function(bufnr, on_dir)
-		-- Find workspace root first to limit upward searches, leveraging vim.fs.root cache
-		local workspace_root = vim.fs.root(bufnr, WORKSPACE_ROOT_PATTERNS) or vim.fn.getcwd()
-		local stop_dir = vim.fs.dirname(workspace_root)
-
 		local fname = vim.api.nvim_buf_get_name(bufnr)
+		local home_stop = vim.fs.dirname(vim.fn.expand("$HOME"))
 
-		-- Priority: If Oxlint is found, disable ESLint
-		local oxlint_config = vim.fs.find(OXLINT_CONFIG, { path = fname, upward = true, stop = stop_dir })[1]
+		-- Priority: If Oxlint is found (same stop boundary as oxlint.lua), disable ESLint
+		local oxlint_config = vim.fs.find(OXLINT_CONFIG, { path = fname, upward = true, stop = home_stop })[1]
 		if oxlint_config then
 			on_dir(nil)
 			return
 		end
+
+		-- Find workspace root to limit ESLint config search
+		local workspace_root = vim.fs.root(bufnr, WORKSPACE_ROOT_PATTERNS) or vim.fn.getcwd()
+		local stop_dir = vim.fs.dirname(workspace_root)
 
 		-- Only activate if flat config exists (ESLint 9+)
 		local eslint_config = vim.fs.find(ESLINT_FLAT_CONFIG, { path = fname, upward = true, stop = stop_dir })[1]
