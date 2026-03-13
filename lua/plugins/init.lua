@@ -1,5 +1,4 @@
 require("plugins.blink")
-require("plugins.catppuccin")
 require("plugins.conform")
 require("plugins.dap")
 require("plugins.flash")

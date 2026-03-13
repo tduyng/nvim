@@ -1,3 +1,4 @@
+require("config.theme")
 require("config.options")
 require("config.keymaps")
 require("config.session")

@@ -13,10 +13,6 @@
       "rev": "40dcec5555f960b0a04340d76eabdf4efe78599d",
       "src": "https://github.com/stevearc/conform.nvim"
     },
-    "dbg.nvim": {
-      "rev": "64933381a049a9d582716f0473df9abb2fd11d2d",
-      "src": "~/projects/oss/git/nixhub/apps/dbg.nvim"
-    },
     "flash.nvim": {
       "rev": "fcea7ff883235d9024dc41e638f164a450c14ca2",
       "src": "https://github.com/folke/flash.nvim"
@@ -26,7 +22,7 @@
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "grug-far.nvim": {
-      "rev": "ac52ee2d87399dfd7b0d59d5b1d2bbaf2a4028f1",
+      "rev": "dc4684e163971bb1f5bfb93fbd4bb3e892bf9b15",
       "src": "https://github.com/MagicDuck/grug-far.nvim"
     },
     "markdown-preview.nvim": {
@@ -40,11 +36,6 @@
     "nui.nvim": {
       "rev": "de740991c12411b663994b2860f1a4fd0937c130",
       "src": "https://github.com/MunifTanjim/nui.nvim"
-    },
-    "nvim": {
-      "rev": "cb5665990a797b102715188e73c44c3931b3b42e",
-      "src": "https://github.com/catppuccin/nvim",
-      "version": "1.0.0 - 2.0.0"
     },
     "nvim-dap": {
       "rev": "db321947bb289a2d4d76a32e76e4d2bd6103d7df",
